@@ -1,0 +1,14 @@
+{
+  "name": "Kerims Lernbegleiter",
+  "short_name": "Lernbegleiter",
+  "description": "Lernbegleiter-App für Hausaufgaben, Diktate und Übungen",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#1b2a4a",
+  "theme_color": "#1b2a4a",
+  "orientation": "any",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}
