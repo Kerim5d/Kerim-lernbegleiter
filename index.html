@@ -6,13 +6,16 @@
 <title>Kerims Lernbegleiter</title>
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1b2a4a">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
 <header class="topbar">
   <div class="brand">📚 Kerims Lernbegleiter</div>
-  <div id="todayFaecher" class="today-faecher"></div>
+  <div class="topbar-right">
+    <div id="wetterAnzeige">🌡️ ...</div>
+    <div id="todayFaecher" class="today-faecher"></div>
+  </div>
 </header>
 
 <nav class="tabbar" id="tabbar">
@@ -27,6 +30,7 @@
   <button class="tab" data-view="kalender">📅 Kalender</button>
   <button class="tab" data-view="noten">🏅 Noten</button>
   <button class="tab" data-view="dashboard">👨‍👩‍👦 Eltern</button>
+  <button class="tab" data-view="einstellungen">⚙️ Einstellungen</button>
 </nav>
 
 <main id="viewContainer">
@@ -126,6 +130,12 @@
       <div id="abfrageErgebnis" class="ergebnis-box"></div>
       <button class="primary-btn" id="abfrageNextBtn" style="display:none;">Nächste Frage ➜</button>
     </div>
+    <div class="jarvis-panel">
+      <div class="status-line">🎙️ DEINE STIMME</div>
+      <p class="hint">Drück auf den Knopf, dann siehst du deine eigene Stimme live als Equalizer, während du sprichst.</p>
+      <button class="primary-btn" id="eigeneStimmeBtn">🎙️ Meine Stimme anzeigen</button>
+      <div class="jarvis-core" id="eigeneStimmeRing"></div>
+    </div>
   </section>
 
   <!-- ELTERN DASHBOARD -->
@@ -152,6 +162,15 @@
         <button class="primary-btn" id="saveTelegramBtn">Einstellungen speichern</button>
         <button class="primary-btn" id="sendReportBtn">📩 Heutigen Bericht jetzt senden</button>
         <div id="reportStatus" class="hint"></div>
+      </div>
+      <div class="dash-card">
+        <h3>Bericht per E-Mail</h3>
+        <p class="hint">Trage eure E-Mail-Adressen ein. Beim Klick öffnet sich dein E-Mail-Programm mit dem fertigen Bericht.</p>
+        <input type="email" id="elternEmail1" placeholder="E-Mail (Mama/Papa)">
+        <input type="email" id="elternEmail2" placeholder="E-Mail (Ehepartner)">
+        <button class="primary-btn" id="saveElternEmailBtn">E-Mails speichern</button>
+        <button class="primary-btn" id="sendEmailReportBtn">✉️ Bericht per E-Mail senden</button>
+        <div id="emailReportStatus" class="hint"></div>
       </div>
     </div>
   </section>
@@ -196,6 +215,8 @@
       <div id="probeFeedback" class="ergebnis-box"></div>
     </div>
     <div id="probeAuswertung" class="ergebnis-box" style="display:none;"></div>
+    <button class="primary-btn" id="probeDruckenBtn" style="display:none;">🖨️ Probe ausdrucken</button>
+    <div id="druckBereich" class="print-only"></div>
   </section>
 
   <!-- KALENDER -->
@@ -209,6 +230,49 @@
     </div>
     <h3>Kommende Termine</h3>
     <div id="terminListe" class="blatt-liste"></div>
+  </section>
+
+  <!-- EINSTELLUNGEN -->
+  <section class="view" id="view-einstellungen">
+    <h2>⚙️ Einstellungen</h2>
+
+    <div class="jarvis-panel">
+      <div class="status-line">🔊 STIMME & SPRACHE</div>
+      <p class="hint">Stelle ein, wie die App vorliest, und in welcher Sprache gesprochen/gehört wird.</p>
+      <div class="setup-row">
+        <label>Sprache:
+          <select id="einstellLang"></select>
+        </label>
+        <label>Stimme:
+          <select id="einstellStimme"></select>
+        </label>
+      </div>
+      <div class="setup-row">
+        <label>Geschwindigkeit:
+          <input type="range" id="einstellRate" min="0.5" max="1.5" step="0.1">
+        </label>
+        <label>Tonhöhe:
+          <input type="range" id="einstellPitch" min="0.5" max="1.5" step="0.1">
+        </label>
+        <label>Lautstärke:
+          <input type="range" id="einstellVolume" min="0" max="1" step="0.1">
+        </label>
+      </div>
+      <button class="primary-btn" id="einstellTestBtn">🔊 Stimme testen</button>
+      <button class="primary-btn" id="einstellSaveBtn">Speichern</button>
+      <div class="jarvis-core" id="einstellEqualizerRing"></div>
+    </div>
+
+    <div class="jarvis-panel">
+      <div class="status-line">🌍 WETTER-ORT</div>
+      <p class="hint">Standard ist München (Bayern). Du kannst Breiten-/Längengrad eines anderen Orts eintragen.</p>
+      <div class="setup-row">
+        <input type="text" id="wetterOrtName" placeholder="Ortsname">
+        <input type="number" id="wetterOrtLat" placeholder="Breitengrad" step="0.0001">
+        <input type="number" id="wetterOrtLon" placeholder="Längengrad" step="0.0001">
+        <button class="primary-btn" id="wetterOrtSaveBtn">Ort speichern</button>
+      </div>
+    </div>
   </section>
 
   <!-- NOTEN -->
@@ -226,6 +290,12 @@
 </main>
 
 <script src="js/db.js"></script>
+<script src="js/einstellungen.js"></script>
+<script src="js/sprachen.js"></script>
+<script src="js/equalizer.js"></script>
+<script src="js/mikrofon-equalizer.js"></script>
+<script src="js/wetter.js"></script>
+<script src="js/druck.js"></script>
 <script src="js/stundenplan.js"></script>
 <script src="js/ocr.js"></script>
 <script src="js/arbeitsblaetter.js"></script>

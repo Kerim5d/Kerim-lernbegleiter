@@ -89,6 +89,21 @@ async function sendeTelegramBericht() {
   }
 }
 
+function sendeEmailBericht() {
+  const cfg = DB._get('elternEmails', { email1: '', email2: '' });
+  const statusEl = document.getElementById('emailReportStatus');
+  const empfaenger = [cfg.email1, cfg.email2].filter(Boolean).join(',');
+  if (!empfaenger) {
+    statusEl.textContent = 'Bitte zuerst mindestens eine E-Mail-Adresse eintragen und speichern.';
+    return;
+  }
+  const text = erzeugeTagesbericht();
+  const betreff = encodeURIComponent('Lernbericht für Kerim – ' + new Date().toLocaleDateString('de-DE'));
+  const body = encodeURIComponent(text);
+  window.location.href = `mailto:${empfaenger}?subject=${betreff}&body=${body}`;
+  statusEl.textContent = 'E-Mail-Programm wurde geöffnet. Bitte dort auf Senden klicken.';
+}
+
 function initDashboardView() {
   zeichneZeitChart();
   renderStaerkenSchwaechen();
@@ -107,4 +122,18 @@ function initDashboardView() {
   };
 
   document.getElementById('sendReportBtn').onclick = sendeTelegramBericht;
+
+  const emailCfg = DB._get('elternEmails', { email1: '', email2: '' });
+  document.getElementById('elternEmail1').value = emailCfg.email1 || '';
+  document.getElementById('elternEmail2').value = emailCfg.email2 || '';
+
+  document.getElementById('saveElternEmailBtn').onclick = () => {
+    DB._set('elternEmails', {
+      email1: document.getElementById('elternEmail1').value.trim(),
+      email2: document.getElementById('elternEmail2').value.trim()
+    });
+    document.getElementById('emailReportStatus').textContent = 'E-Mails gespeichert.';
+  };
+
+  document.getElementById('sendEmailReportBtn').onclick = sendeEmailBericht;
 }

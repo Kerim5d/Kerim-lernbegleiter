@@ -5,6 +5,7 @@ let _probeFragen = [];
 let _probeIndex = 0;
 let _probeRichtig = 0;
 let _probeFach = '';
+let _probeEinzelErgebnisse = [];
 
 function sammleProbeMaterial(fach) {
   const blaetter = DB.getBlaetter().filter(b => b.fach === fach);
@@ -28,6 +29,7 @@ function initProbeView() {
     }
     _probeIndex = 0;
     _probeRichtig = 0;
+    _probeEinzelErgebnisse = [];
     document.getElementById('probeArea').style.display = 'block';
     document.getElementById('probeAuswertung').style.display = 'none';
     Zeit.start(_probeFach, 'probe-trainer');
@@ -43,6 +45,7 @@ function initProbeView() {
     const score = aehnlichkeit(original, gegeben);
     const richtig = score >= 0.8;
     if (richtig) _probeRichtig++;
+    _probeEinzelErgebnisse.push({ text: _probeFragen[_probeIndex], richtig });
 
     DB.addErgebnis({
       fach: _probeFach,
@@ -89,4 +92,12 @@ function beendeProbe() {
     <p style="font-size:28px;font-weight:bold;">Note: ${note}</p>
     <p class="hint">Das ist nur eine Übungsnote nach Schulnotenschlüssel — zählt nicht offiziell, zeigt aber gut den Stand!</p>
   `;
+
+  const druckBtn = document.getElementById('probeDruckenBtn');
+  if (druckBtn) {
+    druckBtn.style.display = 'inline-block';
+    druckBtn.onclick = () => {
+      erzeugeDruckAnsichtProbe(_probeFach, _probeRichtig, _probeFragen.length, note, _probeEinzelErgebnisse);
+    };
+  }
 }

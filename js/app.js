@@ -16,6 +16,7 @@ function zeigeView(name) {
   if (name === 'probe') initProbeView();
   if (name === 'kalender') initKalenderView();
   if (name === 'noten') initNotenView();
+  if (name === 'einstellungen') initEinstellungenView();
   if (name === 'start') aktualisiereStart();
 
   // Kamera stoppen, wenn man den Bereich verlässt (Akku/Datenschutz)
@@ -27,6 +28,14 @@ function zeigeView(name) {
 function aktualisiereStart() {
   document.getElementById('todayTimeTotal').textContent = Zeit.heutigeGesamtzeitMin() + ' Min';
   renderHeuteFaecher();
+}
+
+/* Begrüßung bei jedem App-Start */
+function begruesseKerim() {
+  const hint = document.getElementById('startHint');
+  const text = 'Selam Dostum naber nasil, wie gehts es dir heute';
+  if (hint) hint.textContent = text;
+  if (typeof sprich === 'function') sprich(text);
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -43,6 +52,13 @@ document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('startProbeBtn').onclick = () => zeigeView('probe');
 
   aktualisiereStart();
+  begruesseKerim();
+
+  if (typeof ladeWetter === 'function') ladeWetter();
+
+  if (typeof initEigeneStimmeButton === 'function') {
+    initEigeneStimmeButton('eigeneStimmeBtn', 'eigeneStimmeRing');
+  }
 
   // Service Worker für Offline-Fähigkeit registrieren (falls Datei vorhanden)
   if ('serviceWorker' in navigator) {

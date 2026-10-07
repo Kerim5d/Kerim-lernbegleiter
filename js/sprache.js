@@ -7,11 +7,24 @@ function sprich(text, onEnde) {
     alert('Sprachausgabe wird auf diesem Gerät nicht unterstützt.');
     return;
   }
+  const cfg = (typeof EinstellungenDB !== 'undefined') ? EinstellungenDB.get() : { lang: 'de-DE', rate: 0.9, pitch: 1, volume: 1, voiceName: '' };
   window.speechSynthesis.cancel();
   const utter = new SpeechSynthesisUtterance(text);
-  utter.lang = 'de-DE';
-  utter.rate = 0.9;
-  if (onEnde) utter.onend = onEnde;
+  utter.lang = cfg.lang || 'de-DE';
+  utter.rate = cfg.rate || 0.9;
+  utter.pitch = cfg.pitch || 1;
+  utter.volume = cfg.volume != null ? cfg.volume : 1;
+
+  if (cfg.voiceName) {
+    const stimme = window.speechSynthesis.getVoices().find(v => v.name === cfg.voiceName);
+    if (stimme) utter.voice = stimme;
+  }
+
+  if (typeof starteEqualizerAnimation === 'function') starteEqualizerAnimation();
+  utter.onend = () => {
+    if (typeof stoppeEqualizerAnimation === 'function') stoppeEqualizerAnimation();
+    if (onEnde) onEnde();
+  };
   window.speechSynthesis.speak(utter);
 }
 
@@ -21,8 +34,9 @@ function hoereZu(onErgebnis, onFehler) {
     if (onFehler) onFehler('Spracherkennung wird auf diesem Gerät/Browser nicht unterstützt.');
     return;
   }
+  const cfg = (typeof EinstellungenDB !== 'undefined') ? EinstellungenDB.get() : { lang: 'de-DE' };
   const recog = new SpeechRecognition();
-  recog.lang = 'de-DE';
+  recog.lang = cfg.lang || 'de-DE';
   recog.interimResults = false;
   recog.maxAlternatives = 1;
   recog.onresult = (event) => {
