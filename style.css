@@ -1,0 +1,218 @@
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: 'Segoe UI', Roboto, sans-serif;
+  background: #0f1b33;
+  color: #f0f3fa;
+  min-height: 100vh;
+}
+
+.topbar {
+  background: #1b2a4a;
+  padding: 14px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 20px;
+  font-weight: bold;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+.today-faecher { font-size: 14px; font-weight: normal; opacity: 0.8; }
+
+.tabbar {
+  display: flex;
+  overflow-x: auto;
+  background: #16233f;
+  position: sticky;
+  top: 56px;
+  z-index: 9;
+}
+.tab {
+  flex: 1;
+  padding: 14px 8px;
+  background: none;
+  border: none;
+  color: #cfd8ec;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+  border-bottom: 3px solid transparent;
+}
+.tab.active {
+  color: #fff;
+  border-bottom: 3px solid #ffb703;
+  font-weight: bold;
+}
+
+main { padding: 20px; max-width: 900px; margin: 0 auto; }
+.view { display: none; }
+.view.active { display: block; animation: fadeIn .25s ease; }
+@keyframes fadeIn { from{opacity:0;} to{opacity:1;} }
+
+h2 { font-size: 26px; margin-top: 0; }
+h3 { font-size: 19px; color: #ffd166; }
+.hint { color: #a9b4cc; font-size: 15px; }
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+  gap: 16px;
+  margin: 20px 0;
+}
+.big-card {
+  background: #22335c;
+  border-radius: 16px;
+  padding: 24px 12px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform .15s;
+}
+.big-card:active { transform: scale(0.96); }
+.big-card .icon { font-size: 42px; }
+
+.timer-box {
+  background: #22335c;
+  border-radius: 12px;
+  padding: 16px;
+  font-size: 18px;
+  text-align: center;
+}
+
+.primary-btn {
+  background: #ffb703;
+  color: #1b2a4a;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 8px 4px;
+}
+.primary-btn:disabled { opacity: 0.5; }
+.primary-btn:active { transform: scale(0.97); }
+
+button#diktatVorlesenBtn, button#diktatWiederholenBtn,
+button#abfrageSprechenBtn {
+  background: #4cc9f0;
+  color: #0f1b33;
+  border: none;
+  padding: 14px 20px;
+  border-radius: 10px;
+  font-size: 17px;
+  font-weight: bold;
+  cursor: pointer;
+  margin: 6px;
+}
+
+.stundenplan-grid {
+  display: grid;
+  grid-template-columns: 110px 1fr;
+  gap: 10px;
+  margin: 16px 0;
+}
+.stundenplan-grid .tag-label { font-weight: bold; align-self: center; }
+.faecher-input {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.fach-chip {
+  background: #22335c;
+  border: 2px solid #39507f;
+  color: #cfd8ec;
+  padding: 8px 12px;
+  border-radius: 20px;
+  cursor: pointer;
+  font-size: 14px;
+}
+.fach-chip.selected {
+  background: #ffb703;
+  color: #1b2a4a;
+  border-color: #ffb703;
+}
+
+.camera-box {
+  background: #15213c;
+  border-radius: 14px;
+  padding: 14px;
+  margin: 14px 0;
+}
+#camPreview, #diktatCamPreview {
+  width: 100%;
+  max-width: 480px;
+  border-radius: 10px;
+  background: #000;
+  display: block;
+  margin: 0 auto 10px;
+}
+.camera-controls, .setup-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+select, input[type=text] {
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid #39507f;
+  background: #15213c;
+  color: #fff;
+  font-size: 15px;
+}
+
+.blatt-liste, .verlauf-liste {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.blatt-item, .verlauf-item {
+  background: #15213c;
+  border-radius: 10px;
+  padding: 10px 14px;
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 14px;
+}
+
+.diktat-area, .abfrage-area {
+  background: #15213c;
+  border-radius: 14px;
+  padding: 16px;
+  margin-top: 10px;
+}
+.diktat-status, .abfrage-frage {
+  font-size: 20px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+.ergebnis-box {
+  margin-top: 14px;
+  padding: 14px;
+  border-radius: 10px;
+  font-size: 16px;
+  white-space: pre-wrap;
+}
+.ergebnis-box.ok { background: #1f4d2c; color: #b7f5c6; }
+.ergebnis-box.fail { background: #4d1f1f; color: #f5b7b7; }
+
+.dash-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 16px;
+}
+.dash-card {
+  background: #15213c;
+  border-radius: 14px;
+  padding: 16px;
+}
