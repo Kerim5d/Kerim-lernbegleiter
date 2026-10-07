@@ -30,17 +30,9 @@ function aktualisiereStart() {
   renderHeuteFaecher();
 }
 
-/* Begrüßung bei jedem App-Start */
-function begruesseKerim() {
-  const hint = document.getElementById('startHint');
-  const text = 'Hallo Kerim, schön dass du wieder da bist!';
-  if (hint) hint.textContent = text;
-  if (typeof sprich === 'function') sprich(text);
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   if (typeof starteMatrixIntro === 'function') {
-    starteMatrixIntro(() => { begruesseKerim(); });
+    starteMatrixIntro();
   }
 
   document.querySelectorAll('.tab').forEach(tab => {

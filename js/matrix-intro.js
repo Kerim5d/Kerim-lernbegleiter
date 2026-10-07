@@ -18,11 +18,12 @@ function starteMatrixIntro(onFertig) {
   const tropfen = new Array(spalten).fill(0).map(() => Math.random() * -h / schriftGroesse);
 
   const ziel = 'HALLO KERIM';
-  let phase = 'regen'; // 'regen' -> 'formation' -> 'ausblenden'
+  let phase = 'regen'; // 'regen' -> 'formation' -> 'halten' -> 'ausblenden'
   let frame = 0;
-  const regenDauer = 70;      // Frames reiner Regen
-  const formationDauer = 90;  // Frames für die Buchstaben-Formation
-  const ausblendDauer = 40;   // Frames für das Ausblenden
+  const regenDauer = 110;      // Frames reiner Regen (~1.8s bei 60fps)
+  const formationDauer = 150;  // Frames für die Buchstaben-Formation (~2.5s)
+  const haltenDauer = 90;      // Frames: fertiger Schriftzug bleibt stehen (~1.5s)
+  const ausblendDauer = 50;    // Frames für das Ausblenden (~0.8s)
 
   // Zielpositionen der Buchstaben von "HALLO KERIM" in der Bildschirmmitte berechnen
   function berechneZielPositionen() {
@@ -95,7 +96,10 @@ function starteMatrixIntro(onFertig) {
       if (frame > regenDauer) { phase = 'formation'; frame = 0; }
     } else if (phase === 'formation') {
       zeichneFormation(frame / formationDauer);
-      if (frame > formationDauer) { phase = 'ausblenden'; frame = 0; }
+      if (frame > formationDauer) { phase = 'halten'; frame = 0; }
+    } else if (phase === 'halten') {
+      zeichneFormation(1);
+      if (frame > haltenDauer) { phase = 'ausblenden'; frame = 0; }
     } else if (phase === 'ausblenden') {
       overlay.style.opacity = Math.max(0, 1 - frame / ausblendDauer);
       if (frame > ausblendDauer) {
